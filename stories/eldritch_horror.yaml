@@ -1,0 +1,291 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  VOID'S ECHO -- A Lovecraftian Descent
+#  Load with:  python3 engine.py stories/eldritch_horror.yaml
+# ══════════════════════════════════════════════════════════════════════════════
+
+meta:
+  title: "VOID'S ECHO"
+  tagline: "The stars are not right."
+  subtitle: "A Cosmic Horror Experience"
+  title_colour: dim
+  default_box_colour: purple
+  title_pause: 2.5
+  start_scene: the_arrival
+  end_scene: __end__
+  title_art: |
+    .       .          .      .           .    .        .   .   .
+         .        .         .                 .             .
+    .              .               .                .            .
+         .               .                  .                .
+    .         .                .                    .           .
+  stats:
+    - id: sanity
+      label: "SANITY   "
+      start: 100
+      colour: cyan
+    - id: omen
+      label: "OMEN     "
+      start: 0
+      colour: purple
+
+ending_rules:
+  - condition:
+      stat_gte: {id: omen, value: 70}
+      stat_lte: {id: sanity, value: 20}
+    ending: ascended
+  - condition:
+      stat_lte: {id: sanity, value: 14}
+    ending: madness
+  - condition:
+      stat_gte: {id: omen, value: 40}
+      stat_lte: {id: sanity, value: 60}
+    ending: haunted
+  - ending: survivor
+
+endings:
+  ascended:
+    title: "ENDING: THE COSMIC TRUTH"
+    colour: purple
+    text:
+      - text: "The veil has torn."
+        colour: purple
+        style: bold
+      - text: ""
+      - text: "You see the geometry of the universe for what it is:"
+        colour: sand
+      - text: "Cold. Vast. Indifferent. Beautifully wrong."
+        colour: dim
+      - text: ""
+      - text: "Humanity was but a dream in an eye that has finally opened."
+        colour: purple
+
+  madness:
+    title: "ENDING: LOST TO THE ABYSS"
+    colour: grey
+    text:
+      - text: "The sound... it never stops."
+        colour: dim
+      - text: ""
+      - text: "Names, faces, stars—they all bleed together into a single, screaming void."
+        colour: grey
+      - text: ""
+      - text: "You are no longer {name}."
+        colour: sand
+      - text: ""
+      - text: "There is only the echo. The endless, hollow echo."
+        colour: dim
+
+  haunted:
+    title: "ENDING: THE UNANSWERED QUESTION"
+    colour: steel
+    text:
+      - text: "You escaped. Physically, at least."
+        colour: steel
+      - text: ""
+      - text: "But the shadows in the corner of your room seem a little longer now."
+        colour: sand
+      - text: "Every time you close your eyes, you hear them whispering your name."
+        colour: dim
+      - text: ""
+      - text: "You know too much to ever truly be at peace again."
+        colour: steel
+
+  survivor:
+    title: "ENDING: THE MUNDANE"
+    colour: sand
+    text:
+      - text: "You left Innsmouth behind. You chose the safety of the known."
+        colour: sand
+      - text: ""
+      - text: "But in the quiet moments, you wonder if the darkness is looking back."
+        colour: dim
+
+scenes:
+
+  - id: the_arrival
+    title: "INNSMOUTH -- COASTAL ROAD"
+    box_colour: purple
+    text:
+      - text: "The fog rolls off the Atlantic like a heavy, damp shroud."
+        colour: sand
+      - text: "The town of Innsmouth sits slumped against the cliffs, a collection of rotting timber and salt-stained stone."
+        colour: sand
+      - text: ""
+      - text: "Something feels... wrong. The rhythm of the tide is off. It sounds like breathing."
+        colour: dim
+      - text: ""
+      - text: "What is your name, stranger?"
+        colour: purple
+    effects:
+      - set_name: true
+    beats:
+      - type: scan
+        text: "APPROACHING FOG"
+        duration: 2.0
+        colour: purple
+      - type: pause
+        duration: 1.0
+    choice:
+      prompt: "WHERE WILL YOU GO?"
+      options:
+        - label: "The local inn, 'The Fisherman's Rest'"
+          next: the_inn
+          effects:
+            - stat: sanity
+              delta: -5
+        - label: "The docks, where the mist is thickest"
+          next: the_docks
+          effects:
+            - stat: omen
+              delta: 10
+
+  - id: the_inn
+    title: "THE FISHERMAN'S REST"
+    box_colour: rust
+    text:
+      - text: "The inn is dim, lit only by sputtering tallow candles."
+        colour: sand
+      - text: "The patrons sit in silence. Their eyes—bulbous and unblinking—follow you as you walk to the bar."
+        colour: dim
+      - text: ""
+      - text: "A man with skin that looks too wet for a dry room approaches you."
+        colour: sand
+    choice:
+      prompt: "WHAT DO YOU DO?"
+      options:
+        - label: "Order a drink and listen"
+          next: the_whisper
+          effects:
+            - stat: omen
+              delta: 15
+        - label: "Avoid eye contact and head to your room"
+          next: the_room
+          effects:
+            - stat: sanity
+              delta: -10
+
+  - id: the_docks
+    title: "THE DOCKS"
+    box_colour: grey
+    text:
+      - text: "The air smells of salt and something much older... and far more putrid."
+        colour: sand
+      - text: "A group of figures is gathered at the edge of a pier, silhouetted against a moon that looks strangely pale."
+        colour: dim
+      - text: ""
+      - text: "They are chanting. It's not words, but a series of clicks and wet, guttural sounds."
+        colour: purple
+    beats:
+      - type: ascii
+        colour: grey
+        art: |
+            ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+             ~  ~  ~  ~  ~  ~  ~  ~  ~
+              ~  ~  ~  ~  ~  ~  ~  ~
+            ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    effects:
+      - stat: omen
+        delta: 25
+      - stat: sanity
+        delta: -20
+    choice:
+      prompt: "THE RITUAL INTENSIFIES."
+      options:
+        - label: "Investigate the source of the sound"
+          next: the_abyss
+          effects:
+            - stat: omen
+              delta: 30
+        - label: "Turn back, trembling"
+          next: the_arrival
+          effects:
+            - set_flag: saw_ritual
+
+  - id: the_room
+    title: "YOUR ROOM"
+    box_colour: dim
+    text:
+      - text: "The room is small and smells of mildew."
+        colour: sand
+      - text: ""
+      - text: "You try to sleep, but there's a scratching sound coming from beneath the floorboards."
+        colour: dim
+      - text: "It sounds like many tiny feet. Or perhaps something much larger."
+        colour: purple
+    choice:
+      prompt: "IN THE DARKNESS..."
+      options:
+        - label: "Look under the bed"
+          next: abyss_encounter
+          effects:
+            - stat: sanity
+              delta: -30
+        - label: "Try to sleep it off"
+          next: __end__
+
+  - id: the_whisper
+    title: "THE WHISPER"
+    box_colour: purple
+    text:
+      - text: "The man leans in close. His breath smells of old seaweed."
+        colour: sand
+      - text: ""
+      - text: "\"The stars,\" he whispers, \"they are shifting their gaze to us.\""
+        colour: gold
+        style: bold
+      - text: ""
+      - text: "He smiles. He has too many teeth."
+        colour: purple
+    choice:
+      prompt: "YOU REALIZE HE IS NOT HUMAN."
+      options:
+        - label: "Flee the inn"
+          next: the_arrival
+        - label: "Ask him about 'the stars'"
+          next: abyss_encounter
+          effects:
+            - stat: omen
+              delta: 20
+
+  - id: abyss_encounter
+    title: "THE THRESHOLD"
+    box_colour: grey
+    text:
+      - text: "The floor gives way. You are falling into something that isn't darkness—it is a void of non-existence."
+        colour: dim
+      - text: ""
+      - text: "A presence meets you in the descent. It is vast. It is ancient. It is thinking."
+        colour: purple
+    beats:
+      - type: glitch
+        text: "THE VOID IS WATCHING"
+        colour: purple
+        iterations: 4
+      - type: pause
+        duration: 2.0
+    next: __end__
+
+  - id: the_abyss
+    title: "THE ABYSS"
+    box_colour: grey
+    text:
+      - text: "You push past the crowd at the pier."
+        colour: sand
+      - text: "The water isn't water. It's a thick, black substance that defies physics."
+        colour: dim
+      - text: ""
+      - text: "From the depths, something rises. A colossal, shifting mass of tentacles and eyes."
+        colour: purple
+    choice:
+      prompt: "YOUR MIND RECOILS."
+      options:
+        - label: "Stare into the Great Eye"
+          next: abyss_encounter
+          effects:
+            - stat: omen
+              delta: 50
+            - stat: sanity
+              delta: -40
+        - label: "Scream for help"
+          next: __end__
+

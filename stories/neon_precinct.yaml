@@ -1,0 +1,456 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  NEON PRECINCT -- A Noir Detective Module
+#  Load with:  python3 engine.py stories/neon_precinct.yaml
+# ══════════════════════════════════════════════════════════════════════════════
+
+meta:
+  title: "NEON PRECINCT"
+  tagline: "The city never sleeps. Neither do the dead."
+  subtitle: "A Rain-soaked Detective Story"
+  title_colour: cyan
+  default_box_colour: cyan
+  title_pause: 1.5
+  start_scene: start
+  end_scene: __end__
+
+  title_art: |
+
+     ███╗   ██╗███████╗ ██████╗ ███╗   ██╗
+     ████╗  ██║██╔════╝██╔═══██╗████╗  ██║
+     ██╔██╗ ██║█████╗  ██║   ██║██╔██╗ ██║
+     ██║╚██╗██║██╔══╝  ██║   ██║██║╚██╗██║
+     ██║ ╚████║███████╗╚██████╔╝██║ ╚████║
+     ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
+     ██████╗ ██████╗ ███████╗ ██████╗██╗███╗   ██╗ ██████╗████████╗
+     ██╔══██╗██╔══██╗██╔════╝██╔════╝██║████╗  ██║██╔════╝╚══██╔══╝
+     ██████╔╝██████╔╝█████╗  ██║     ██║██╔██╗ ██║██║        ██║
+     ██╔═══╝ ██╔══██╗██╔══╝  ██║     ██║██║╚██╗██║██║        ██║
+     ██║     ██║  ██║███████╗╚██████╗██║██║ ╚████║╚██████╗   ██║
+     ╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝╚═╝  ╚═══╝ ╚═════╝   ╚═╝
+
+  stats:
+    - id: evidence
+      label: "EVIDENCE  "
+      start: 0
+      colour: cyan
+    - id: heat
+      label: "HEAT      "
+      start: 0
+      colour: red
+
+ending_rules:
+  - condition:
+      stat_gte: {id: evidence, value: 60}
+      stat_lte: {id: heat, value: 40}
+    ending: solved
+  - condition:
+      stat_gte: {id: heat, value: 60}
+    ending: burned
+  - condition:
+      stat_gte: {id: evidence, value: 30}
+    ending: cold_case
+  - ending: forgotten
+
+endings:
+  solved:
+    title: "CASE CLOSED"
+    colour: cyan
+    text:
+      - text: "You had the evidence. You had the nerve."
+        colour: cyan
+        style: bold
+      - text: ""
+      - text: "The DA didn't want to believe it. They never do."
+        colour: sand
+      - text: "But the facts don't care what anyone believes."
+        colour: sand
+      - text: ""
+      - text: "Case closed. For now."
+        colour: cyan
+      - text: "In this city, there's always another one."
+        colour: dim
+
+  burned:
+    title: "TOO HOT"
+    colour: red
+    text:
+      - text: "They made you."
+        colour: red
+        style: bold
+      - text: ""
+      - text: "Your badge is on the Captain's desk by morning."
+        colour: sand
+      - text: "Your case files: shredded."
+        colour: sand
+      - text: ""
+      - text: "The killer walks. The city forgets."
+        colour: dim
+      - text: "You don't."
+        colour: red
+
+  cold_case:
+    title: "UNFINISHED BUSINESS"
+    colour: steel
+    text:
+      - text: "Not enough. Not yet."
+        colour: steel
+      - text: ""
+      - text: "You pin the last clue to the board and step back."
+        colour: sand
+      - text: "A face. A name. A thread that won't quite reach."
+        colour: sand
+      - text: ""
+      - text: "The rain keeps falling."
+        colour: dim
+      - text: "You'll find it. You always do -- eventually."
+        colour: steel
+
+  forgotten:
+    title: "ANOTHER GHOST"
+    colour: grey
+    text:
+      - text: "Some cases go cold."
+        colour: dim
+      - text: ""
+      - text: "The victim's face fades from the board."
+        colour: sand
+      - text: "The city paves over itself again."
+        colour: sand
+      - text: ""
+      - text: "You pour a drink and stare at the rain."
+        colour: grey
+
+scenes:
+
+  - id: start
+    title: "PRECINCT 7 -- 2:47 AM"
+    box_colour: cyan
+    text:
+      - text: "Rain hammers the precinct windows."
+        colour: sand
+      - text: "You've been awake for nineteen hours."
+        colour: sand
+      - text: ""
+      - text: "A body. Downtown. The third this month."
+        colour: steel
+      - text: "Same signature: a neon violet handprint on the wall."
+        colour: cyan
+      - text: ""
+      - text: "What's your name, detective?"
+        colour: dim
+    effects:
+      - set_name: true
+    beats:
+      - type: pause
+        duration: 0.4
+      - type: typeout
+        text: "Detective {name}. You've seen worse. You tell yourself."
+        colour: sand
+      - type: pause
+        duration: 0.8
+    next: crime_scene
+
+  - id: crime_scene
+    title: "CRIME SCENE -- HOTEL MIRAGE"
+    box_colour: cyan
+    text:
+      - text: "Room 404. The door was unlocked."
+        colour: sand
+      - text: "Victor Lau, 52. Import broker. No priors."
+        colour: steel
+      - text: ""
+      - text: "Three things catch your eye:"
+        colour: sand
+      - text: "  A smashed burner phone."
+        colour: dim
+      - text: "  A receipt from the Velvet Lounge."
+        colour: dim
+      - text: "  The violet handprint -- still faintly luminescent."
+        colour: cyan
+    beats:
+      - type: ascii
+        colour: cyan
+        art: |
+
+              +-----------------------------+
+              | CRIME SCENE - HOTEL MIRAGE  |
+              |                             |
+              |  [VIOLET GLOW ON WALL]      |
+              |                             |
+              |  [===] SMASHED PHONE        |
+              |  [~~~] VELVET LOUNGE RCPT   |
+              +-----------------------------+
+
+    choice:
+      prompt: "WHERE DO YOU FOCUS FIRST?"
+      options:
+        - label: "Bag the smashed phone -- send it to tech"
+          next: phone_lab
+          effects:
+            - stat: evidence
+              delta: 15
+            - add_memory: "Burner phone recovered"
+        - label: "Head to the Velvet Lounge"
+          next: velvet_lounge
+        - label: "Test the handprint -- it's still glowing"
+          next: handprint
+          effects:
+            - stat: evidence
+              delta: 10
+
+  - id: phone_lab
+    title: "TECH DIVISION"
+    box_colour: steel
+    text:
+      - text: "Rita in tech works fast when you owe her."
+        colour: sand
+      - text: "By 4 AM she has something."
+        colour: sand
+      - text: ""
+      - text: "Last call, three hours before time of death."
+        colour: steel
+      - text: "Unregistered number. But the tower ping..."
+        colour: steel
+      - text: "...puts it inside the Meridian Tower."
+        colour: cyan
+        style: bold
+    effects:
+      - add_memory: "Phone pinged Meridian Tower"
+      - stat: evidence
+        delta: 10
+    choice:
+      prompt: "MERIDIAN TOWER. CORPORATE."
+      options:
+        - label: "Cross-reference with building access logs"
+          next: access_logs
+          effects:
+            - stat: evidence
+              delta: 15
+            - stat: heat
+              delta: 10
+        - label: "Head to the Velvet Lounge first"
+          next: velvet_lounge
+
+  - id: handprint
+    title: "FORENSICS"
+    box_colour: cyan
+    text:
+      - text: "The glow is bioluminescent ink -- synthetic."
+        colour: sand
+      - text: "Military-grade. Not sold commercially."
+        colour: steel
+      - text: ""
+      - text: "One source in the city produces it:"
+        colour: sand
+      - text: "Helios BioTech. Meridian Tower, floors 40-55."
+        colour: cyan
+        style: bold
+    beats:
+      - type: scan
+        text: "ANALYSING COMPOUND"
+        duration: 1.8
+        colour: cyan
+    effects:
+      - add_memory: "Bioluminescent ink -- Helios BioTech"
+      - stat: evidence
+        delta: 15
+    next: velvet_lounge
+
+  - id: velvet_lounge
+    title: "THE VELVET LOUNGE -- 4:15 AM"
+    box_colour: purple
+    text:
+      - text: "The bar closes at 5. The barman's already counting."
+        colour: sand
+      - text: "You show him Lau's photo."
+        colour: sand
+      - text: ""
+      - text: "Sure. He was in here. Every Thursday."
+        colour: steel
+      - text: "Always met the same woman. Tall. White coat."
+        colour: steel
+      - text: "Corporate type. Paid cash. Never gave a name."
+        colour: steel
+      - text: ""
+      - text: "He slides you a matchbook."
+        colour: sand
+      - text: "Printed on the inside flap: MERIDIAN 55."
+        colour: cyan
+    effects:
+      - add_memory: "Woman in white coat -- Meridian 55"
+      - stat: evidence
+        delta: 20
+    choice:
+      prompt: "MERIDIAN 55. HELIOS BIOTECH."
+      options:
+        - label: "Get a warrant -- do this clean"
+          next: warrant
+          effects:
+            - stat: heat
+              delta: -10
+        - label: "Go in tonight -- no warrant, no noise"
+          next: break_in
+          effects:
+            - stat: heat
+              delta: 25
+
+  - id: access_logs
+    title: "ACCESS LOGS -- MERIDIAN TOWER"
+    box_colour: steel
+    text:
+      - text: "Building security coughs up the logs -- reluctantly."
+        colour: sand
+      - text: "Victor Lau badged into floor 52 six times this year."
+        colour: sand
+      - text: ""
+      - text: "Last visit: 48 hours before his death."
+        colour: rust
+      - text: ""
+      - text: "The floor is leased to Helios BioTech."
+        colour: cyan
+      - text: "Lead researcher: Dr. Sana Orin."
+        colour: cyan
+        style: bold
+    effects:
+      - add_memory: "Dr. Sana Orin -- Helios BioTech"
+      - stat: evidence
+        delta: 15
+      - stat: heat
+        delta: 5
+    next: confrontation
+
+  - id: warrant
+    title: "JUDGE HARTLEY -- 6 AM"
+    box_colour: steel
+    text:
+      - text: "Hartley signs the warrant without blinking."
+        colour: sand
+      - text: "Helios has been on my radar, she says simply."
+        colour: steel
+      - text: ""
+      - text: "You ride the elevator to the 55th floor."
+        colour: sand
+      - text: "Badge out. Warrant in hand. Everything by the book."
+        colour: sand
+    effects:
+      - stat: heat
+        delta: -5
+      - set_flag: has_warrant
+    next: confrontation
+
+  - id: break_in
+    title: "MERIDIAN TOWER -- 2 AM"
+    box_colour: red
+    text:
+      - text: "The service entrance. A copied keycard."
+        colour: sand
+      - text: "Forty-five floors of silence."
+        colour: sand
+      - text: ""
+      - text: "Floor 55. The lab is dark except for incubator lights."
+        colour: cyan
+      - text: "And a woman at a workstation. White coat. Doesn't look up."
+        colour: sand
+      - text: ""
+      - text: "I wondered when you'd come, she says."
+        colour: steel
+    beats:
+      - type: glitch
+        text: "SECURITY SYSTEM TRIPPED -- TIMER RUNNING"
+        colour: red
+    effects:
+      - stat: heat
+        delta: 15
+      - set_flag: broke_in
+    next: confrontation
+
+  - id: confrontation
+    title: "DR. SANA ORIN -- HELIOS BIOTECH"
+    box_colour: cyan
+    text:
+      - text: "Dr. Orin is calm. Too calm."
+        colour: sand
+      - text: "Victor was going to expose us, she says."
+        colour: steel
+      - text: "The ink is a tracking compound. Government contract."
+        colour: steel
+      - text: "He found out. He had to be managed."
+        colour: rust
+      - text: ""
+      - text: "Managed. Three bodies. That's what she calls it."
+        colour: sand
+    choice:
+      prompt: "HOW DO YOU PLAY THIS?"
+      options:
+        - label: "Arrest her -- you have enough"
+          next: arrest
+          condition:
+            stat_gte: {id: evidence, value: 40}
+          effects:
+            - stat: evidence
+              delta: 20
+        - label: "Get her talking -- you need more"
+          next: push_harder
+          effects:
+            - stat: evidence
+              delta: 10
+            - stat: heat
+              delta: 10
+        - label: "Walk out -- this is bigger than you"
+          next: walk_away
+
+  - id: arrest
+    stats: false
+    beats:
+      - type: typeout
+        text: "Cuffs on. She doesn't resist."
+        colour: cyan
+      - type: typeout
+        text: "You won't understand what you're dismantling, she says."
+        colour: steel
+      - type: typeout
+        text: "Maybe. But three people are dead."
+        colour: sand
+      - type: pause
+        duration: 1.0
+    effects:
+      - add_memory: "Dr. Orin arrested"
+    next: __end__
+
+  - id: push_harder
+    stats: false
+    beats:
+      - type: typeout
+        text: "She talks. She's proud of it -- that's the tell."
+        colour: sand
+      - type: typeout
+        text: "The contract goes to the 14th floor. The Deputy Mayor."
+        colour: cyan
+      - type: pause
+        duration: 0.8
+    effects:
+      - add_memory: "Deputy Mayor implicated"
+      - stat: evidence
+        delta: 20
+    next: arrest
+
+  - id: walk_away
+    stats: false
+    beats:
+      - type: typeout
+        text: "You walk to the elevator. She calls after you."
+        colour: sand
+      - type: typeout
+        text: "Smart. Stay smart, detective."
+        colour: steel
+      - type: typeout
+        text: "The doors close. The rain is still falling."
+        colour: dim
+      - type: pause
+        duration: 1.0
+    effects:
+      - stat: heat
+        delta: -20
+      - add_memory: "Let Orin go"
+    next: __end__
+
